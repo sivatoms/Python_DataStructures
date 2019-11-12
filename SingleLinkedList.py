@@ -24,6 +24,20 @@ class SingleLinkedList:
         new_node = Node(elem)
         new_node.next = self.head
         self.head = new_node
+    
+    # insert elem at any index after an elem
+    def insert_at_index(self,elem,position):
+        counter = 0
+        n = self.head
+        while n is not None:
+            if counter == position:
+                print('Came here---')
+                new_node = Node(elem)
+                new_node.next = n.next
+                n.next = new_node
+                break
+            counter += 1
+            n = n.next
 
     # create a function to view the entire list
     def print_list(self):
@@ -76,17 +90,20 @@ class SingleLinkedList:
                 self.head = n.next
             else:
                 while n is not None:
-                    if n.next.value == elem:
+                    if n.next.value == elem and n.next is not None:
                         n.next = n.next.next
-                        print('Came here')
                         self.print_list()
                         break
+                    elif n.next is None:
+                        pass
                     n = n.next
 n1 = SingleLinkedList()
 n1.make_list()
 #n1.print_list()
-n1.delete_elem(37)
+#n1.delete_elem(37)
 n1.search_elem(37)
+#n1.print_list()
+n1.insert_at_index(26,2)
 n1.print_list()
 
 
