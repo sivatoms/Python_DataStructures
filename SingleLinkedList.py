@@ -72,18 +72,22 @@ class SingleLinkedList:
             print('List is empty..')
         else:
             n = self.head
-            while n is not None:
-                if n.next.value == elem:
-                    n.next = n.next.next
-                    print('Came here')
-                    self.print_list()
-                    break
-                n = n.next
+            if n.value == elem:
+                self.head = n.next
+            else:
+                while n is not None:
+                    if n.next.value == elem:
+                        n.next = n.next.next
+                        print('Came here')
+                        self.print_list()
+                        break
+                    n = n.next
 n1 = SingleLinkedList()
 n1.make_list()
 #n1.print_list()
 n1.delete_elem(37)
 n1.search_elem(37)
+n1.print_list()
 
 
              
