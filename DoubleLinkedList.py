@@ -43,12 +43,11 @@ class DoubleLinkedList:
             self.head.next = new_node
         self.head = new_node
 
-    def traverse_list_from_start(self):
+    def traverse_list(self):
         if self.head is None:
             print('List is empty..')
         else:
-            n = self.head
-            print('All nodes are : ', end=' ')
+            n = self.head            
             if n.next is None:
                 while n is not None:
                     print(n.value, end = ' ')
@@ -58,20 +57,6 @@ class DoubleLinkedList:
                     print(n.value, end = ' ')
                     n = n.next
 
-    def traverse_list_from_end(self):
-        if self.head is None:
-            print('List is empty..')
-        else:
-            n = self.head
-            print('All nodes are : ', end=' ')
-            if n.next is None:
-                while n is not None:
-                    print(n.value, end = ' ')
-                    n = n.previous
-            else:
-                while n is not None:
-                    print(n.value, end = ' ')
-                    n = n.next
     # serach the node by value
     def search(self, val):
         if self.head is None:
@@ -155,14 +140,38 @@ class DoubleLinkedList:
         
     # reverse the list
     def reverse_list(self):
-        
-
-
+        if self.head.previous is None and self.head.next is None:
+            print('List has only one node : ', self.head.value)
+            return
+        temp = None
+        n = self.head
+        # when a nodes added at start
+        if n.previous is None:
+            while n is not None:
+                temp = n.previous
+                n.previous = n.next
+                n.next = temp
+                n = n.previous
+            
+            if temp is not None:
+                self.head = temp.previous
+        else:
+            # when nodes added at the end
+            while n is not None:
+                temp = n.next
+                n.next = n.previous
+                n.previous = temp
+                n = n.next
+            
+            if temp is not None:
+                self.head = temp.next
         
 n1 = DoubleLinkedList()
 n1.make_list()
 #n1.traverse_list_from_start()
-#n1.search(37)
+n1.search(12)
 #n1.delete(12)
-#n1.traverse_list_from_start()
+n1.traverse_list()
 n1.reverse_list()
+n1.traverse_list()
+n1.search(12)
