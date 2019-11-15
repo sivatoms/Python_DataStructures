@@ -145,7 +145,7 @@ class DoubleLinkedList:
             return
         temp = None
         n = self.head
-        # when a nodes added at start
+        # when nodes added at start
         if n.previous is None:
             while n is not None:
                 temp = n.previous
