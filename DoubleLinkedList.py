@@ -29,115 +29,111 @@ class DoubleLinkedList:
 
     def insert_at_start(self, val):
         new_node = Node(val)
-        new_node.next = self.head
-        new_node.previous = None
+        
+        cur_node = self.head
+        prev_node = None
         if self.head is not None:
-            self.head.previous = new_node
-        self.head = new_node
+            while cur_node is not None:
+                prev_node = cur_node
+                cur_node = cur_node.previous
+            
+            prev_node.previous = new_node
+            new_node.next = prev_node
+            self.head = new_node
+
+        else:
+            self.head = new_node
+            self.head.next = None
+            self.head.previous = None
+            
     
     def insert_at_end(self, val):
         new_node = Node(val)
-        new_node.next = None
-        new_node.previous = self.head
+        cur_node = self.head
+        prev_node = None
         if self.head is not None:
-            self.head.next = new_node
-        self.head = new_node
+            while cur_node is not None:
+                prev_node = cur_node
+                cur_node = cur_node.next
+            prev_node.next = new_node
+            new_node.previous = prev_node
+            
+        else:
+            self.head = new_node
+            self.head.next = None
+            self.head.previous = None
+            return
 
     def traverse_list(self):
         if self.head is None:
             print('List is empty..')
         else:
-            n = self.head            
-            if n.next is None:
-                while n is not None:
-                    print(n.value, end = ' ')
-                    n = n.previous
-            else:
-                while n is not None:
-                    print(n.value, end = ' ')
-                    n = n.next
+            n = self.head           
+            while n is not None:
+                print(n.value, end = ' ')
+                n = n.next
+
+    #inserting a new node before a value
+    def insert_a_node_at_value(self,new_elem,old_value):
+        cur_node = self.head
+        prev_node = None
+        while cur_node and cur_node.value != old_value:
+            prev_node = cur_node
+            cur_node = cur_node.next
+        
+        new_node = Node(new_elem)
+        new_node.next = cur_node
+        new_node.previous = prev_node
+        prev_node.next = new_node
+        cur_node.previous = new_node
+
 
     # serach the node by value
     def search(self, val):
         if self.head is None:
             print('List is empty...')
-        else:
-            n = self.head
-            if n.next is None:
-                while n is not None:
-                    if n.value == val:
-                        print('\nFound the value')
-                        break
-                    n = n.previous
-            else:
-                while n is not None:
-                    if n.value == val:
-                        print('\nFound the value')
-                        break
-                    n = n.next
-    
+            return
+        
+        cur_node = self.head
+        counter = 0
+        while cur_node:
+            if cur_node.value == val:
+                print('node found at : ', counter)
+                return
+            counter += 1
+            cur_node = cur_node.next
     # delete the node by value
     def delete(self, val):
         if self.head is None:
             print("The list has no element to delete")
             return
-
-        # this is for the insert_at_start list where self.head.previous is always None
-        if self.head.previous is None:
-            # if the node is at the start position of the list
-            if self.head.value == val:
-                n = self.head.next
-                self.head = n
-                self.head.previous = None
-                return
-            else:
-                n = self.head
-                while n.next is not None:
-                    if n.value == val:
-                        break
-                    n = n.next
-                # if the node is at last position of the list
-                if n.next is None:
-                    temp = n.previous
-                    self.head = temp
-                    self.head.next = None
-                    return
-                else:
-                # if node is in the middle of the list
-                    temp_next = n.next
-                    temp_prev = n.previous
-                    temp_next.previous = n.previous
-                    temp_prev.next = n.next
-                    return
-
-        # this is for the insert_at_end list where self.head.next is always None
-        if self.head.next is None:
-            # if node is at last position o the list 
-            if self.head.value == val:
-                n = self.head.previous
-                self.head = n
-                self.head.next = None
-                return
-            else:
-                n = self.head
-                while n.previous is not None:
-                    if n.value == val:
-                        break
-                    n = n.previous
-                # if the node is at the start of the list
-                if n.previous is None:
-                    temp = n.next
-                    self.head = temp
-                    self.head.previous = None
-                    return
-                else:
-                    # if the node is in the middle of the list
-                    temp_next = n.next
-                    temp_prev = n.previous
-                    temp_next.previous = n.previous
-                    temp_prev.next = n.next
-                    return
         
+        cur_node = self.head
+        while cur_node:
+            # when deleting head node of the list
+            if self.head.value == val:
+                temp = self.head.next
+                self.head.next = None
+                temp.previous = None
+                self.head = temp
+                return
+            
+            if cur_node.value == val:
+                prev_node = cur_node.previous
+                next_node = cur_node.next
+
+                # when deleting last node of the list
+                if next_node is None:
+                    prev_node.next = None
+                    return
+
+                prev_node.next = next_node
+                next_node.previous = prev_node
+                return
+            
+            cur_node = cur_node.next
+            
+
     # reverse the list
     def reverse_list(self):
         if self.head.previous is None and self.head.next is None:
@@ -145,33 +141,60 @@ class DoubleLinkedList:
             return
         temp = None
         n = self.head
-        # when nodes added at start
-        if n.previous is None:
-            while n is not None:
-                temp = n.previous
-                n.previous = n.next
-                n.next = temp
-                n = n.previous
-            
-            if temp is not None:
-                self.head = temp.previous
+       
+        while n is not None:
+            temp = n.previous
+            n.previous = n.next
+            n.next = temp
+            n = n.previous
+        
+        if temp is not None:
+            self.head = temp.previous
+        
+    
+    # swap two nodes
+    def swap_two_nodes(self, node1, node2):
+        
+        if node1 == node2:
+            return
+        
+        cur_1 = self.head
+        prev_1 = None
+        while cur_1 and cur_1.value != node1:
+            prev_1 = cur_1
+            cur_1 = cur_1.next
+
+        cur_2 = self.head
+        prev_2 = None
+        while cur_2 and cur_2.value != node2:
+            prev_2 = cur_2
+            cur_2 = cur_2.next
+        
+        if prev_1:
+            prev_1.next = cur_2
         else:
-            # when nodes added at the end
-            while n is not None:
-                temp = n.next
-                n.next = n.previous
-                n.previous = temp
-                n = n.next
-            
-            if temp is not None:
-                self.head = temp.next
+            cur_2.previous = None
+            self.head = cur_2
+        
+        if prev_2:
+            prev_2.next = cur_1
+        else:
+            cur_1.previous = None
+            self.head = cur_1
+        
+        cur_1.next,cur_2.next = cur_2.next, cur_1.next
+        cur_1.previous, cur_2.previous = cur_2.previous,cur_1.previous
         
 n1 = DoubleLinkedList()
 n1.make_list()
-#n1.traverse_list_from_start()
-n1.search(12)
-#n1.delete(12)
+#n1.reverse_list()
 n1.traverse_list()
-n1.reverse_list()
+#n1.insert_a_node_at_value(20,37)
+print()
+#n1.reverse_list()
+#n1.delete(100)
+#n1.search(37)
+n1.swap_two_nodes(1,2)
 n1.traverse_list()
-n1.search(12)
+
+
