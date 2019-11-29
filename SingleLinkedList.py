@@ -17,7 +17,7 @@ class SingleLinkedList:
         nums = int(input('Enter the length of the node : '))
         print('Enter node values : ', end=' ')
         while nums > 0:
-            elem = int(input())
+            elem = input()
             if pick == 1:
                 self.insert_a_node_at_start(elem)
             elif pick == 2:
@@ -308,13 +308,69 @@ class SingleLinkedList:
                 cur_node.next = None
                 break
             cur_node = cur_node.next
+        
         temp = self.head
-        while last_node:           
-            nxt = last_node.next
-            last_node.next = temp
-            temp = last_node
-            self.head = last_node
-            last_node = nxt
+        self.head = last_node
+        prev_node = None
+        while last_node:
+            prev_node = last_node           
+            last_node = last_node.next
+        prev_node.next = temp
+
+    # checks if the lists is palindrome or not
+    def is_palindrome(self):
+        # Method 1
+        #s = ""
+        #cur_node = self.head
+        #while cur_node:
+         #   s += cur_node.value
+         #   cur_node = cur_node.next
+        #return s == s[::-1]
+
+        # Method 2
+        p = self.head
+        s = []
+        while p:
+            s.append(p.value)
+            p = p.next
+        p = self.head
+        while p:
+            data = s.pop()
+            if p.value != data:
+                return False
+            p = p.next
+        return True
+
+    # sum of two lists
+    def sum_of_two_lists(self,n2):
+        p = self.head
+        q = n2.head
+
+        sum_list = SingleLinkedList()
+        carry = 0
+        while p or q:
+            if not p:
+                i = 0
+            else:
+                i = int(p.value)
+            if not q:
+                j = 0
+            else:
+                j = int(q.value)
+            
+            s = i + j + carry
+            if s >= 10:
+                carry = 1
+                remainder = s % 10
+                sum_list.insert_a_node_at_end(remainder)
+            else:
+                carry = 0
+                sum_list.insert_a_node_at_end(s)
+            if p:
+                p = p.next
+            if q:
+                q = q.next
+        sum_list.print_list()
 
 
 n1 = SingleLinkedList()
@@ -337,7 +393,11 @@ n1.make_list()
 n1.print_list()
 #print('\n',n1.count_occurences_iterative(1))
 #print('\n',n1.count_occurences_recursive(n1.head, 1))
-n1.rotate_nth_node(2)
+#n1.rotate_nth_node(4)
+#print(n1.is_palindrome())
+n2 = SingleLinkedList()
+n2.make_list()  # Eg : 248, and n1 is : 365
+n1.sum_of_two_lists(n2) 
 n1.print_list()
 
 

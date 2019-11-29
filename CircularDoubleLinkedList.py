@@ -17,7 +17,7 @@ class CircularDoubleLinkedList:
         print('\n1. Insert at end \n2. Insert at start \n3. Insert at any index')
         pick = int(input('Choose any option : '))
         for _ in range(nums):
-            val = int(input('Enter node : '))
+            val = input('Enter node : ')
             if pick == 1:
                 self.insert_node_at_end(val)
             elif pick == 2:
@@ -198,7 +198,7 @@ class CircularDoubleLinkedList:
         last_node = cur_node.previous
         while cur_node:
             nxt = cur_node.next
-            
+
             prev_node = cur_node.previous
             next_node = cur_node.next
 
@@ -213,6 +213,24 @@ class CircularDoubleLinkedList:
 
                 break
             cur_node = nxt
+    # checks if the list is palindrome or not
+    def is_palindrome(self, n2):
+        node_1 = self.head
+        node_2 = n2.head
+        flag = False
+
+        while True:
+            if node_1.value == node_2.value:
+                flag = True
+            else:
+                flag = False
+                break
+            if self.head == node_1.next:
+                break
+            node_1 = node_1.next
+            node_2 = node_2.next   
+        return flag
+
 
 if __name__ == '__main__':
     n1 = CircularDoubleLinkedList()
@@ -223,5 +241,12 @@ if __name__ == '__main__':
     #n1.delete_node(37)
     #n1.swap_two_nodes(37,100)
     print('--------------------------')
-    n1.reverse_list()
+    #n1.reverse_list()
+
+    #import copy
+    #n2 = copy.deepcopy(n1)
+    #n2.reverse_list()
+    #n2.traverse_list()
+    #print(n1.is_palindrome(n2))
+    
     n1.traverse_list()
